@@ -11,6 +11,8 @@ import {
   Center,
   Stack,
   Box,
+  GridItem,
+  Grid,
 } from "@chakra-ui/react";
 const options = {
   layout: {
@@ -53,9 +55,8 @@ const App = () => {
     text: "",
     isSubmitted: false,
     status: "error",
-    errorDescript: "Meaw",
+    errorDescript: "Meaw! The word can't be generated",
   });
-  const [adic, setAdic] = useState();
   var aadd;
 
   let angle = Math.PI;
@@ -91,7 +92,14 @@ const App = () => {
         graph: {
           nodes: [
             ...nodes,
-            { id, label: `q${id}(${c != undefined ? c : ""})`, color },
+            {
+              id,
+              label: `q${id}(${c != undefined ? c : ""})`,
+              color: {
+                border: `${c == undefined ? "#FF0000" : "#000000"}`,
+                background: color,
+              },
+            },
           ],
           edges: edges,
         },
@@ -118,16 +126,17 @@ const App = () => {
 
   const { graph, events } = state;
 
-  const dfs = (node, cur, term, pos) => {
-    console.log(cur);
-    if (cur.length === word.text.length && term) {
-      if (cur.localeCompare(word.text) === 0) {
+  const dfs = (node, curr, term, pos) => {
+    //console.log(cur);
+    if (curr.length === word.text.length && term) {
+      if (curr.localeCompare(word.text) === 0) {
         word.status = "success";
+        word.errorDescript = "Meaw! The word can be generated";
       }
       return;
     }
 
-    if (cur.length > word.text.length) return;
+    if (curr.length > word.text.length) return;
 
     for (let i = 0; i < aadd[0].length; i++) {
       if (aadd[node][i].exists === true) {
@@ -135,7 +144,7 @@ const App = () => {
           if (word.text[pos] === aadd[node][i].name[j]) {
             dfs(
               i,
-              cur + aadd[node][i].name[j],
+              curr + aadd[node][i].name[j],
               aadd[node][i].terminal[j],
               pos + 1
             );
@@ -180,8 +189,6 @@ const App = () => {
       )
     );
 
-    console.log(aadd);
-
     //C->gP
     //P->nM
 
@@ -211,100 +218,120 @@ const App = () => {
       }
       aadd[from][to].name.push(e[3]);
       createEdge(from, to, e[3]);
-
     });
-    console.log(aadd);
     if (word != "") dfs(0, "", false, 0);
   };
 
   return (
     <>
-      <Box bg="#BEE3F8" w="100%" p={2} color="white" boxShadow="dark-lg">
-        <Center p={4} fontSize="xl" color="#1A365D">
-          Laborator 1
-        </Center>
-        <Stack spacing={2}>
-          <InputGroup>
-            <InputLeftAddon children="Vn" bg="teal" />
-            <Input
-              onChange={(e) => setNotTerm(e.target.value)}
-              type="text"
-              placeholder="S, A, B, C"
-              bg="#F0FFF4"
-              color="#1A365D"
-            />
-          </InputGroup>
+      <Grid templateColumns="2fr 4fr">
+        <GridItem>
+          <Box
+            bg="#BEE3F8"
+            w="100%"
+            h="100vh"
+            p={2}
+            color="white"
+            boxShadow="dark-lg"
+          >
+            <Center p={7} fontSize="5xl" color="#1A365D">
+              Laborator 1
+            </Center>
+            <Center h="65vh" mb={-70}>
+              <Stack spacing={2} w="100%">
+                <InputGroup size="lg">
+                  <InputLeftAddon children="Vn" bg="teal" />
+                  <Input
+                    onChange={(e) => setNotTerm(e.target.value)}
+                    type="text"
+                    placeholder="S, A, B, C"
+                    bg="#F0FFF4"
+                    color="#1A365D"
+                  />
+                </InputGroup>
 
-          <InputGroup>
-            <InputLeftAddon children="Vt" bg="teal" />
-            <Input
-              onChange={(e) => setTerm(e.target.value)}
-              type="text"
-              placeholder="a, b"
-              bg="#F0FFF4"
-              color="#1A365D"
-            />
-          </InputGroup>
+                <InputGroup size="lg">
+                  <InputLeftAddon children="Vt" bg="teal" />
+                  <Input
+                    onChange={(e) => setTerm(e.target.value)}
+                    type="text"
+                    placeholder="a, b"
+                    bg="#F0FFF4"
+                    color="#1A365D"
+                  />
+                </InputGroup>
 
-          <InputGroup>
-            <InputLeftAddon children="Pr" bg="teal" />
-            <Input
-              onChange={(e) => setProd(e.target.value)}
-              type="text"
-              placeholder="S->aA, A->bS, A->aB, B->bC, C->aA, C->b"
-              bg="#F0FFF4"
-              color="#1A365D"
-            />
-          </InputGroup>
+                <InputGroup size="lg">
+                  <InputLeftAddon children="Pr" bg="teal" />
+                  <Input
+                    onChange={(e) => setProd(e.target.value)}
+                    type="text"
+                    placeholder="S->aA, A->bS, A->aB, B->bC, C->aA, C->b"
+                    bg="#F0FFF4"
+                    color="#1A365D"
+                  />
+                </InputGroup>
 
-          <InputGroup>
-            <InputLeftAddon children="W" bg="teal" />
-            <Input
-              id="W"
-              onChange={(e) =>
-                setWord({
-                  ...word,
-                  text: e.target.value,
-                  isSubmitted: false,
-                  status: "error",
-                })
-              }
-              type="text"
-              placeholder="aaaabc"
-              bg="#F0FFF4"
-              color="#1A365D"
-            />
-          </InputGroup>
+                <InputGroup size="lg">
+                  <InputLeftAddon children="W" bg="teal" />
+                  <Input
+                    id="W"
+                    onChange={(e) =>
+                      setWord({
+                        ...word,
+                        text: e.target.value,
+                        isSubmitted: false,
+                        status: "error",
+                      })
+                    }
+                    type="text"
+                    placeholder="aaaabc"
+                    bg="#F0FFF4"
+                    color="#1A365D"
+                  />
+                </InputGroup>
 
-          <Center>
-            <Button
-              onClick={() => {
-                const valide = createGraph(notTerm, term, prod, word.text);
-                setWord({ ...word, isSubmitted: true });
-              }}
-              colorScheme="teal"
-              type="submit"
-              mt={4}
-              size="sm"
-            >
-              Submit
-            </Button>
-          </Center>
-        </Stack>
-      </Box>
-      {word.isSubmitted && word.text != "" && (
-        <Alert status={word.status}>
-          <AlertIcon />
-          <AlertDescription>{word.errorDescript}</AlertDescription>
-        </Alert>
-      )}
+                <Center>
+                  <Button
+                    onClick={() => {
+                      const valide = createGraph(
+                        notTerm,
+                        term,
+                        prod,
+                        word.text
+                      );
+                      setWord({ ...word, isSubmitted: true });
+                    }}
+                    colorScheme="teal"
+                    type="submit"
+                    mt={4}
+                    size="lg"
+                  >
+                    Submit
+                  </Button>
+                </Center>
+              </Stack>
+            </Center>
 
-      <Graph
-        graph={graph}
-        options={options}
-        events={events}
-        style={{ height: "640px" }}
-      />
+            {word.isSubmitted && word.text != "" && (
+              <Alert status={word.status}>
+                <AlertIcon />
+                <AlertDescription color="#1A365D">
+                  {word.errorDescript}
+                </AlertDescription>
+              </Alert>
+            )}
+          </Box>
+        </GridItem>
+        <GridItem>
+          <Graph
+            graph={graph}
+            options={options}
+            events={events}
+            style={{ height: "100vh" }}
+          />
+        </GridItem>
+      </Grid>
     </>
   );
 };
