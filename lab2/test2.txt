@@ -1,0 +1,9 @@
+AF=(Q, i, m, q0, F),
+Q = { q0, q1, q2, q3 },
+i = { a, b, c }, F = { q3}.
+m (q0, a ) = q0 ,
+m (q1, b ) = q2 ,
+m (q0, a ) = q1,
+m (q2, a ) = q2 ,
+m (q2, b ) = q3,
+m (q2, c ) = q0.

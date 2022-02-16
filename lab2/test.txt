@@ -1,0 +1,9 @@
+AF=(Q, t, u, q0, F),
+Q = { q0, q1, q2 },
+t= { a, b }, F = { q2},
+u(q0, a ) = q1 ,
+u(q0, a ) = q0 ,
+u(q1, b ) = q2 ,
+u(q0, b ) = q0,
+u(q1, b ) = q1,
+u(q2, b ) = q2.
