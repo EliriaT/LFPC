@@ -1,0 +1,22 @@
+string  func HelloFAF[string firstName, string lastName, date today,array num marks, num length ]:
+\
+    string name=firstName+lastName;
+    num i;
+    i=0;
+    num average;
+    until[i<length]
+    \
+        average=average+marks[i];
+        i=i+1;
+    \
+    average=average/length;
+    string text = "Hi {   name }. Nice to meet you today on this beautiful day of {today}. You average mark is: {average} .";
+    return text;
+\
+
+
+num main:
+\
+    string message = HelloFAF("Irina","Tiora",2022.03.09, [9.8,2.5,7.6,7.1555,9.880],5);
+    print(message);
+\
