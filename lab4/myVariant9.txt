@@ -1,0 +1,9 @@
+G=(VN, VT, P, S) 
+VN={S, A, B, C}  
+VT={a, b}
+P={S->aA
+A->b
+A->BA
+B->C
+C->a
+C->BS}

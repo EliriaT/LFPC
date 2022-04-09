@@ -25,17 +25,18 @@ class Chomsky_Normal:
                         for transition in self.productions[second_key]:
                             #Function for constructing new possible transition
                             self.construct_new_transition(second_key,transition,symbol)
-                    #Deleting the empty production
+                    #Deleting the empty production         
                     self.productions[key].remove('emp')
-        #print("1 Eliminate Empty Productions: ",self.non_terminals,self.terminals,self.productions) 
+        #print("1 Eliminate Empty Productions: ",self.productions) 
     
     def construct_new_transition(self,key,transition,symbol):
         length=len(transition)
         for i in range(0,length):           #Looping throught the transition
             if symbol==transition[i]:       #Finding the Symbol
-                if transition[:i] + '' + transition[i+1:]=='': self.productions[key].append('emp')       #Unitary which leads to empty
-                else:self.productions[key].append(transition[:i] + '' + transition[i+1:])                #Appending the new transition by deleting the symbol at index i
-                self.productions[key]=list(set(self.productions[key]))
+                if (transition[:i] + '' + transition[i+1:])=='': 
+                    if 'emp' not in self.productions[key]: self.productions[key].append('emp')       
+                elif (transition[:i] + '' + transition[i+1:]) not in self.productions[key]:self.productions[key].append(transition[:i] + '' + transition[i+1:])                #Appending the new transition by deleting the symbol at index i
+                # self.productions[key]=list(set(self.productions[key]))
 
     #Function to eliminate Unitary Production
     def eliminate_renamings(self):
@@ -133,16 +134,41 @@ class Chomsky_Normal:
         
         #Base case when length of transition is 2
         if length==2:
-            for i in range(0,length):
-                if self.terminals.get(transition[i]):
-                    if self.x.get(transition[i]):  
-                        x_string=self.x[transition[i]] 
+            if self.terminals.get(transition[0]):
+
+                if self.x.get(transition[0]):  
+                    x_string=self.x[transition[0]] 
+                    # print(x_string)
+                else : 
+                    x_string='X'+str(len(self.x.values()))
+                    self.x[transition[0]]=x_string
+                    self.productions[x_string].append(transition[0])
+                    # print(x_string)
+                transition = transition[:0] + x_string + transition[0 + 1:]
+
+            if(len(transition)>2):
+                if self.terminals.get(transition[2]):
+
+                    if self.x.get(transition[2]):  
+                        x_string=self.x[transition[2]] 
+                        # print(x_string)
                     else : 
                         x_string='X'+str(len(self.x.values()))
-                        self.x[transition[i]]=x_string
-                        self.productions[x_string].append(transition[i])
-                    transition = transition[:i] + x_string + transition[i + 1:]
-
+                        self.x[transition[2]]=x_string
+                        self.productions[x_string].append(transition[2])
+                        # print(x_string)
+                    transition = transition[:2] + x_string + transition[2 + 1:]
+            else:
+                if self.terminals.get(transition[1]):
+                    if self.x.get(transition[1]):  
+                        x_string=self.x[transition[1]] 
+                        # print(x_string)
+                    else : 
+                        x_string='X'+str(len(self.x.values()))
+                        self.x[transition[1]]=x_string
+                        self.productions[x_string].append(transition[1])
+                        # print(x_string)
+                    transition = transition[:1] + x_string + transition[1 + 1:]
             return transition
 
         #Base case when length of transition is 3
@@ -202,12 +228,12 @@ class Chomsky_Normal:
             for transition in self.productions[key]:
                 i = self.productions[key].index(transition)     #Getting the index of the current transition in the list for further changing it
                 if len(transition)>1:
-                    if len(transition)>2 and self.y.get(transition): #If there is already such a substitution made previously in the Y dictionary
-                        y_string=self.y[transition] 
-                        self.productions[key] = self.productions[key][:i]+[y_string]+self.productions[key][i+1:]        #Substituting with the Chomsky form
-                    else:
-                        new_transition=self.check_transition_form(transition)       #Getting the Chomsky form transition from a recursive function
-                        self.productions[key] = self.productions[key][:i]+[new_transition]+self.productions[key][i+1:]
+                    # if len(transition)>2 and self.y.get(transition): #If there is already such a substitution made previously in the Y dictionary
+                    #     y_string=self.y[transition] 
+                    #     self.productions[key] = self.productions[key][:i]+[y_string]+self.productions[key][i+1:]        #Substituting with the Chomsky form
+                    # else:
+                    new_transition=self.check_transition_form(transition)       #Getting the Chomsky form transition from a recursive function
+                    self.productions[key] = self.productions[key][:i]+[new_transition]+self.productions[key][i+1:]
 
     def convert_to_Chosmky(self):
         self.eliminate_empty()
@@ -216,6 +242,7 @@ class Chomsky_Normal:
         self.remove_unaccessible(unaccessible)
         self.remove_unproductive()
         self.substitute_transitions()
+        
         for key in self.productions:
             self.productions[key]=list(set(self.productions[key]))
 

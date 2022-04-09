@@ -30,7 +30,7 @@ class InputParser:
     def read_productions(self):
         self.productions=defaultdict(list)
         for line in self.grammar:
-            print(line)
+            # print(line)
             line=self.replace_chars(line)
             self.productions[line[0]].append(line[1:len(line)])
 
