@@ -1,0 +1,11 @@
+
+num main:
+\
+    string message ;
+    message = HelloFAF("Irina",2022.03.09, [9.8,2.5,7.6,7.1555,9.880],5);
+    num calculate;
+    calculate=5*(5+4) + 15 /8 ;
+    print(message);
+\
+
+

@@ -1,0 +1,45 @@
+﻿VN = {<program>,<function-decl>,<main_function>, <type> , <identifier> ,<var-decl>, <statements>, <char>, <nums_char> ,<digit> ,<starting_digit> , <type> , |<expression>, <func-call> , <literals> ,<return-statement> ,<num-literal>, <date-literal>  , <year> , <month>, <day>  , <delimeter> ,<string-literal> ,<bool-literal>, <array-literal>, <flow-control>, <expression>, <term>, <factor>, <exp>, <assignment>, <logic-operator>};
+
+
+VT ={func, main, :, \, -, _, +, - , * , / , ( , ) , < , > , = , <= ,>= ,== ,num , string ,date, bool ,array ,[ , ], return,until,if ,else,and,or,**, 0,1….9,  a | b | ... | z | A | B | ... | Z |,}
+[ ]  - is  optional
+* - zero or more occurances
+[ ]  - terminal
+() - terminal
+()-used for grouping
+
+
+<program>→<function-decl>* <main_function>
+<function-decl>→<type> func <identifier> ( <var-decl>; * ) : \ <statements>*  ;\
+<main_function> →<type> main : \ <statements>*  \
+<identifier>→<char> <nums_char>* | <char> <nums_char>* [<num-literal>]
+<char>→ a | b | ... | z | A | B | ... | Z | _ | 
+<nums_char>→<char> | <digit> | - | 
+<digit>→0 | <starting_digit>
+<starting_digit> → 1 | 2 | ... | 9
+<var-decl> → [array] <type> <identifier>* 
+<type>→num | string | date | bool
+<statement>→<var-decl> | <func-call> | <flow-control>| <return-statement> | <assignment> |<expression>;
+<func-call>→ <identifier>((<identifier>| <literals> ,)*)
+<literals>→<num-literal> | <date-literal> | <string-literal> | <bool-literal> |  <array-literal>
+<return-statement>→ return <boolean_expressions> 
+<num-literal>→[-|+]<starting_digit> <digit>* | 0.<digit>+
+<date-literal> → <year><delimeter> <month><delimeter> <day>
+<year>  → <starting_digit><digit><digit><digit>
+<month>  → 0<digit> | 10 |11 |12
+<day> → <starting_digit><digit>
+<delimeter> → - 
+<string-literal>→”<chars>*  [{<identifier>}]”
+<bool-literal>→ true | false
+<array-literal>→[   (<identifier>| <literals>|<expression> ,)*   ]
+<flow-control>→ if [ <expression> ]  \ <statements>* \  else    \  <statements>*  \   
+                     | until[ <expression> ]   \ <statements>* \
+<boolean_expressions>→comp_expr ((AND|OR) comp_expr)*
+comp_expr		→ NOT (comp_expr) |
+						expr (<logic-operator> expr)*
+expr	→	term ((+|-) term)*
+<term>→<factor> [ * | /  <factor>]*
+<factor>→<factor> [** <factor>]* | (+|-)<factor> |( <boolean_expressions> )|<identifier> | <num-literal> | <string-literal>|  <func-call>
+
+ <assignment>→ <identifier>   =  <boolean_expressions> 
+<logic-operator>→ == | < | > | != | >= | <=
