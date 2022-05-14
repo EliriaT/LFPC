@@ -8,5 +8,5 @@
 ### Lab 6 - Parser and AST construction
 
 #### Final laboratory 6 results:
-![AST image](/LFPC/lab6/ast.png "AST image output title")
+![AST image](/LFPC/lab6/ast.png?raw=true "AST image output title")
 
