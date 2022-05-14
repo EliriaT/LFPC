@@ -3,8 +3,8 @@
 #### 1. Lab 1 - Regular Grammar to Finite Automata
 #### 2. Lab 2 - NFA to DFA conversion
 #### 3. Lab 3 - Lexer
-#### 4. Lab 4 - Chomsky Natural Form
-#### 5. Lab 4.5 - Greibach Natural Form
+  #### 4. Lab 4 - Chomsky Normal Form
+#### 5. Lab 4.5 - Greibach Normal Form
 #### 6. Lab 6 - Parser and AST construction
 ---
 ### Final laboratory 6 results:
